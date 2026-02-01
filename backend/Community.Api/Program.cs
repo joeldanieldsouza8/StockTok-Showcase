@@ -1,19 +1,22 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
+using StockTok.Services.Community.Api.Services;
+using StockTok.Services.Community.Infrastructure.Data;
 
-namespace ApiGateway;
+namespace StockTok.Services.Community.Api;
 
 public class Program
 {
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
-
+        
         ConfigureServices(builder);
-
+        
         var app = builder.Build();
-
+        
         ConfigureMiddleware(app);
-
+        
         app.Run();
     }
 
@@ -22,8 +25,13 @@ public class Program
         var services = builder.Services;
         var configuration = builder.Configuration;
 
-        services
-            .AddAuthentication(options =>
+        services.AddDbContext<CommunityDbContext>(options =>
+            options.UseNpgsql(configuration.GetConnectionString("CommunityDatabase")));
+
+        services.AddScoped<PostService>(); 
+        services.AddScoped<CommentService>(); 
+
+        services.AddAuthentication(options =>
         {
             options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
             options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -33,36 +41,21 @@ public class Program
             options.Audience = builder.Configuration["Auth0:Audience"];
         });
 
-        services
-            .AddReverseProxy()
-            .LoadFromConfig(configuration.GetSection("ReverseProxy"));
-        
-        services.AddAuthorization();
-        
-        builder.Services.AddCors(options =>
-        {
-            options.AddPolicy("AllowFrontend",
-                policy =>
-                {
-                    policy.WithOrigins("http://localhost:3000") 
-                        .AllowAnyHeader()
-                        .AllowAnyMethod();
-                });
-        });
+        services.AddControllers();
+        services.AddEndpointsApiExplorer();
     }
 
     private static void ConfigureMiddleware(WebApplication app)
     {
         if (app.Environment.IsDevelopment())
         {
+            // app.UseSwagger();
+            // app.UseSwaggerUI();
         }
-
-        app.UseRouting();
-
-        app.UseCors("AllowFrontend");
 
         app.UseAuthentication();
         app.UseAuthorization();
-        
-        app.MapReverseProxy();
-    }}
+
+        app.MapControllers();
+    }
+}

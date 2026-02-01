@@ -1,19 +1,22 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
+using StockTok.Services.User.Infrastructure.Data;
+using StockTok.Services.User.Api.Services;
 
-namespace ApiGateway;
+namespace StockTok.Services.User.Api;
 
 public class Program
 {
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
-
+        
         ConfigureServices(builder);
-
+        
         var app = builder.Build();
-
+        
         ConfigureMiddleware(app);
-
+        
         app.Run();
     }
 
@@ -21,9 +24,14 @@ public class Program
     {
         var services = builder.Services;
         var configuration = builder.Configuration;
-
-        services
-            .AddAuthentication(options =>
+        
+        services.AddDbContext<UserDbContext>(options =>
+            options.UseNpgsql(configuration.GetConnectionString("UserDatabase")));
+        
+        services.AddScoped<UserService>();
+        // services.AddScoped<WatchlistService>(); // Uncomment this when you migrate the WatchlistService
+        
+        services.AddAuthentication(options =>
         {
             options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
             options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -33,36 +41,25 @@ public class Program
             options.Audience = builder.Configuration["Auth0:Audience"];
         });
 
-        services
-            .AddReverseProxy()
-            .LoadFromConfig(configuration.GetSection("ReverseProxy"));
-        
         services.AddAuthorization();
         
-        builder.Services.AddCors(options =>
-        {
-            options.AddPolicy("AllowFrontend",
-                policy =>
-                {
-                    policy.WithOrigins("http://localhost:3000") 
-                        .AllowAnyHeader()
-                        .AllowAnyMethod();
-                });
-        });
+        services.AddControllers();
+        services.AddEndpointsApiExplorer();
     }
 
     private static void ConfigureMiddleware(WebApplication app)
     {
         if (app.Environment.IsDevelopment())
         {
+            // app.UseSwagger();
+            // app.UseSwaggerUI();
         }
-
-        app.UseRouting();
-
-        app.UseCors("AllowFrontend");
-
+        
+        // app.UseHttpsRedirection(); // Keep commented out for internal Docker networking
+        
         app.UseAuthentication();
         app.UseAuthorization();
         
-        app.MapReverseProxy();
-    }}
+        app.MapControllers();
+    }
+}
