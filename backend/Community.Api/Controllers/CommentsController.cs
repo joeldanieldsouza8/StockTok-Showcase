@@ -7,7 +7,7 @@ using StockTok.Services.Community.Api.Services;
 namespace StockTok.Services.Community.Api.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/community/[controller]")]
 [Authorize]
 public class CommentsController : ControllerBase
 {
