@@ -21,11 +21,12 @@ public class NewsController : ControllerBase
             return BadRequest("No symbols provided");
 
         // Split the string by comma and remove whitespace
-        var symbolList = symbols.Split(',', StringSplitOptions.RemoveEmptyEntries)
-                                .Select(s => s.Trim().ToUpper())
-                                .ToList();
+        var symbolList = symbols
+            .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+            .ToList();
 
-        var articles = await _newsService.GetAllNewsBySymbolsAsync(symbolList);
+        var articles = await _newsService.GetNewsBySymbolsAsync(symbolList);
+        
         return Ok(articles);
     }
 }

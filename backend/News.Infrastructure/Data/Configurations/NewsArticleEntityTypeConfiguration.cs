@@ -20,7 +20,7 @@ public class NewsArticleEntityTypeConfiguration : IEntityTypeConfiguration<NewsA
         // NewsArticleEntities (Many) --> NewsArticle (One)
         builder.HasMany(n => n.NewsArticleEntities)
             .WithOne(e => e.NewsArticle)
-            .HasForeignKey(e => e.ArticleID)
+            .HasForeignKey(e => e.ArticleId)
 
             // If a news article is deleted, then delete its entities too
             .OnDelete(DeleteBehavior.Cascade);

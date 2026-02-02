@@ -8,7 +8,7 @@ public class NewsApiResponseDto
     /// <summary>
     /// List of news articles returned by the Marketaux API.
     /// </summary>
-    public List<NewsArticleDto> Data { get; set; } = [];
+    public ICollection<NewsArticleDto> Data { get; set; } = new List<NewsArticleDto>();
 
     /// <summary>
     /// A single news article returned from the Marketaux API.
@@ -18,7 +18,7 @@ public class NewsApiResponseDto
         /// <summary>
         /// Unique identifier for the article, as provided by the Marketaux API.
         /// </summary>
-        public string Uuid { get; set; } = string.Empty;
+        public Guid Uuid { get; set; } 
 
         /// <summary>
         /// Headline or title of the news article.
@@ -29,11 +29,6 @@ public class NewsApiResponseDto
         /// Summary or description of the news article's content.
         /// </summary>
         public string Description { get; set; } = string.Empty;
-
-        /// <summary>
-        /// A short text fragment or highlight from the article.
-        /// </summary>
-        public string Snippet { get; set; } = string.Empty;
 
         /// <summary>
         /// Direct URL to the full news article on the source's website.
@@ -69,14 +64,14 @@ public class NewsApiResponseDto
         /// <summary>
         /// List of financial entities (like companies or stocks) associated with the news article.
         /// </summary>
-        /// <seealso cref="EntityDto"/>
-        public List<EntityDto> Entities { get; set; } = [];
+        /// <seealso cref="NewsArticleEntityDto"/>
+        public ICollection<NewsArticleEntityDto> Entities { get; set; } = new List<NewsArticleEntityDto>();
     }
 
     /// <summary>
     /// A single entity (company, index, etc.) found within a news article.
     /// </summary>
-    public class EntityDto
+    public class NewsArticleEntityDto
     {
         /// <summary>
         /// Stock ticker symbol for the entity.
@@ -117,8 +112,5 @@ public class NewsApiResponseDto
         /// "us" for the USA.
         /// </example>
         public string Country { get; set; } = string.Empty;
-        
-        // public double MatchScore { get; set; }
-        // public double SentimentScore { get; set; }
     }
 }

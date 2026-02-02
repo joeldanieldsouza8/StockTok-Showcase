@@ -32,6 +32,6 @@ public class NewsApiClient
         
         var news = await response.Content.ReadFromJsonAsync<NewsApiResponseDto>(options);
                 
-        return news?.Data ?? new List<NewsApiResponseDto.NewsArticleDto>();
+        return news?.Data.ToList() ?? new List<NewsApiResponseDto.NewsArticleDto>();
     }
 }

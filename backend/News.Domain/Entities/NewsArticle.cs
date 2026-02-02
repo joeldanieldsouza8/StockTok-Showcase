@@ -10,23 +10,22 @@ public class NewsArticle
     /// <summary>
     /// Unique identifier for the article, as provided by the Marketaux API.
     /// </summary>
-    [Key]
-    public string Uuid { get; set; } 
+    public Guid Uuid { get; set; } 
     
     /// <summary>
     /// Headline or title of the news article.
     /// </summary>
-    public string Title { get; set; }
+    public string Title { get; set; } = string.Empty;
     
     /// <summary>
     /// Summary or a snippet of the news article's content.
     /// </summary>
-    public string Description { get; set; }
+    public string Description { get; set; }  = string.Empty;
     
     /// <summary>
     /// Direct URL to the full news article on the source's website.
     /// </summary>
-    public string Url { get; set; }
+    public string Url { get; set; } = string.Empty;
 
     /// <summary>
     /// Two-letter language code in which the article is written in.
@@ -34,7 +33,7 @@ public class NewsArticle
     /// <example>
     /// "en" for English.
     /// </example>
-    public string Language { get; set; }
+    public string Language { get; set; } = string.Empty;
     
     /// <summary>
     /// Coordinated Universal Time (UTC) timestamp indicating when the article was published.
@@ -51,7 +50,7 @@ public class NewsArticle
         /// <summary>
         /// The unique primary key for this entity.
         /// </summary>
-        public Guid ID { get; set; }
+        public Guid Id { get; set; }
     
         /// <summary>
         /// Stock ticker symbol for the entity.
@@ -59,7 +58,7 @@ public class NewsArticle
         /// <example>
         /// NVDA, AAPL
         /// </example>
-        public string Symbol { get; set; }
+        public string Symbol { get; set; }  = string.Empty;
     
         /// <summary>
         /// Full proper name of the entity.
@@ -67,7 +66,7 @@ public class NewsArticle
         /// <example>
         /// NVIDIA Corporation
         /// </example>
-        public string Name { get; set; }
+        public string Name { get; set; }   = string.Empty;
     
         /// <summary>
         /// Two-letter country code where the entity is based.
@@ -75,7 +74,7 @@ public class NewsArticle
         /// <example>
         /// us for the USA.
         /// </example>
-        public string Country { get; set; }
+        public string Country { get; set; } = string.Empty;
     
         /// <summary>
         /// Industry category to which the entity belongs.
@@ -83,16 +82,16 @@ public class NewsArticle
         /// <example>
         /// Technology, Healthcare
         /// </example>
-        public string Industry { get; set; }
+        public string Industry { get; set; } = string.Empty;
 
         /// <summary>
         /// Foreign key property
         /// </summary>
-        public string ArticleID { get; set; }
+        public Guid ArticleId { get; set; }
 
         /// <summary>
         /// Navigation property back to the parent NewsArticle
         /// </summary>
-        public NewsArticle NewsArticle { get; set; } = new();
+        public NewsArticle NewsArticle { get; set; } = null!;
     }
 }
