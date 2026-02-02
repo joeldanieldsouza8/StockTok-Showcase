@@ -1,7 +1,7 @@
 import { auth0 } from "@/lib/auth0";
 import { NextResponse } from "next/server";
 
-const API_BASE_URL = process.env.BACKEND_API_URL;
+const API_GATEWAY_URL = process.env.API_GATEWAY_URL;
 
 export async function DELETE(
   request: Request,
@@ -12,7 +12,7 @@ export async function DELETE(
     const { id, tickerId } = await params;
 
     const response = await fetch(
-      `${API_BASE_URL}/api/watchlists/${id}/tickers/${tickerId}`,
+      `${API_GATEWAY_URL}/api/watchlists/${id}/tickers/${tickerId}`,
       {
         method: "DELETE",
         headers: {

@@ -1,7 +1,7 @@
 import { auth0 } from "@/lib/auth0";
 import { NextResponse } from "next/server";
 
-const API_BASE_URL = process.env.BACKEND_API_URL;
+const API_GATEWAY_URL = process.env.API_GATEWAY_URL;
 
 export async function POST(
   request: Request,
@@ -13,7 +13,7 @@ export async function POST(
     const body = await request.json();
 
     const response = await fetch(
-      `${API_BASE_URL}/api/watchlists/${id}/tickers`,
+      `${API_GATEWAY_URL}/api/watchlists/${id}/tickers`,
       {
         method: "POST",
         headers: {

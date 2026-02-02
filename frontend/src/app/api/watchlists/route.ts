@@ -1,13 +1,13 @@
 import { auth0 } from "@/lib/auth0";
 import { NextResponse } from "next/server";
 
-const API_BASE_URL = process.env.BACKEND_API_URL || "http://api-gateway:8080";
+const API_GATEWAY_URL = process.env.API_GATEWAY_URL;
 
 export async function GET() {
   try {
     const { token } = await auth0.getAccessToken();
 
-    const response = await fetch(`${API_BASE_URL}/api/watchlists`, {
+    const response = await fetch(`${API_GATEWAY_URL}/api/watchlists`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -37,7 +37,7 @@ export async function POST(request: Request) {
     const { token } = await auth0.getAccessToken();
     const body = await request.json();
 
-    const response = await fetch(`${API_BASE_URL}/api/watchlists`, {
+    const response = await fetch(`${API_GATEWAY_URL}/api/watchlists`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,
