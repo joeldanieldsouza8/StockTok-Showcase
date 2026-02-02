@@ -70,9 +70,6 @@ export function Navbar({ user }: NavbarProps) {
               <a href="#watchlist" className="text-sm font-medium hover:text-primary transition-colors">
                 Watchlist
               </a>
-              <a href="#docs" className="text-sm font-medium hover:text-primary transition-colors">
-                Docs
-              </a>
             </nav>
 
             {/* Right Section */}

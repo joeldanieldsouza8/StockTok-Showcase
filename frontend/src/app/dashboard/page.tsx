@@ -195,7 +195,6 @@ export default function WatchlistDashboard() {
           </div>
 
           {/* Right Sidebar - Watchlists */}
-          {/* Right Sidebar - Watchlists */}
           <aside className="lg:w-96 space-y-4">
             <Card className="sticky top-4 border-dashed bg-muted/30">
               <CardHeader>
