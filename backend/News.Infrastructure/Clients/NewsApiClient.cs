@@ -6,7 +6,7 @@ using StockTok.Services.News.Infrastructure.Settings;
 
 namespace StockTok.Services.News.Infrastructure.Clients;
 
-public class NewsApiClient
+public class NewsApiClient : INewsApiClient
 {
     private readonly HttpClient _httpClient;
     private readonly NewsApiSettings _settings;

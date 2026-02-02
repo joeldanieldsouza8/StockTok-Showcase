@@ -46,7 +46,7 @@ public class Program
             .ValidateDataAnnotations()
             .ValidateOnStart();
 
-        services.AddHttpClient<NewsApiClient>((serviceProvider, client) =>
+        services.AddHttpClient<INewsApiClient, NewsApiClient>((serviceProvider, client) =>
         {
             var settings = serviceProvider.GetRequiredService<IOptions<NewsApiSettings>>().Value;
             client.BaseAddress = new Uri(settings.BaseUrl);

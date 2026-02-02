@@ -9,9 +9,9 @@ namespace StockTok.Services.News.Api.Services;
 public class NewsService
 {
     private readonly NewsDbContext _context;
-    private readonly NewsApiClient _newsApiClient;
+    private readonly INewsApiClient _newsApiClient;
 
-    public NewsService(NewsDbContext context, NewsApiClient newsApiClient)
+    public NewsService(NewsDbContext context, INewsApiClient newsApiClient)
     {
         _context = context;
         _newsApiClient = newsApiClient;
@@ -60,8 +60,6 @@ public class NewsService
         
         var missingSymbols = distinctSymbols.Except(freshSymbols).ToList();
         
-        // Initialise a list for only if we have news articles of symbols that we need to fetch
-
         if (missingSymbols.Count > 0)
         {
             // Query the MarketAux API only for the news articles of the symbols we need to query that are either stale or don't yet exist in the database
