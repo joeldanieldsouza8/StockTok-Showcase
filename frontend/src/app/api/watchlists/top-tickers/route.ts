@@ -1,7 +1,7 @@
 import { auth0 } from "@/lib/auth0";
 import { NextRequest, NextResponse } from "next/server";
 
-const API_BASE_URL = process.env.BACKEND_API_URL;
+const API_GATEWAY_URL = process.env.API_GATEWAY_URL;
 
 export async function GET(request: NextRequest) {
   try {
@@ -10,7 +10,7 @@ export async function GET(request: NextRequest) {
     const count = searchParams.get("count") || "3";
 
     const response = await fetch(
-      `${API_BASE_URL}/api/watchlists/top-tickers?count=${count}`,
+      `${API_GATEWAY_URL}/api/watchlists/top-tickers?count=${count}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,

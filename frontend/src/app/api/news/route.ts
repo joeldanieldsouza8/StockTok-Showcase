@@ -1,7 +1,7 @@
 import { auth0 } from "@/lib/auth0";
 import { NextRequest, NextResponse } from "next/server";
 
-const API_BASE_URL = process.env.BACKEND_API_URL || "http://api-gateway:8080";
+const API_GATEWAY_URL = process.env.API_GATEWAY_URL;
 
 export async function GET(request: NextRequest) {
   try {
@@ -24,7 +24,7 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    const url = `${API_BASE_URL}/api/news?symbols=${symbols}`;
+    const url = `${API_GATEWAY_URL}/api/news?symbols=${symbols}`;
 
     console.log(`Proxying to: ${url}`);
 

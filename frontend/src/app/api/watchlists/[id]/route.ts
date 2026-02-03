@@ -1,7 +1,7 @@
 import { auth0 } from "@/lib/auth0";
 import { NextResponse } from "next/server";
 
-const API_BASE_URL = process.env.BACKEND_API_URL;
+const API_GATEWAY_URL = process.env.API_GATEWAY_URL;
 
 export async function GET(
   request: Request,
@@ -11,7 +11,7 @@ export async function GET(
     const { token } = await auth0.getAccessToken();
     const { id } = await params;
 
-    const response = await fetch(`${API_BASE_URL}/api/watchlists/${id}`, {
+    const response = await fetch(`${API_GATEWAY_URL}/api/watchlists/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -45,7 +45,7 @@ export async function PUT(
     const { id } = await params;
     const body = await request.json();
 
-    const response = await fetch(`${API_BASE_URL}/api/watchlists/${id}`, {
+    const response = await fetch(`${API_GATEWAY_URL}/api/watchlists/${id}`, {
       method: "PUT",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -81,7 +81,7 @@ export async function DELETE(
     const { token } = await auth0.getAccessToken();
     const { id } = await params;
 
-    const response = await fetch(`${API_BASE_URL}/api/watchlists/${id}`, {
+    const response = await fetch(`${API_GATEWAY_URL}/api/watchlists/${id}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${token}`,

@@ -29,6 +29,9 @@ export default function WatchlistDashboard() {
   const loadDashboardData = async () => {
     try {
       setIsLoading(true);
+      
+      /*
+      
       const [watchlistsData, topTickersData] = await Promise.all([
         watchlistService.getWatchlists(),
         watchlistService.getTopTickers(5),
@@ -44,6 +47,8 @@ export default function WatchlistDashboard() {
           console.error("Failed to load news:", newsError);
         }
       }
+      
+       */
     } catch (error) {
       console.error("Failed to load dashboard data:", error);
     } finally {
@@ -191,52 +196,33 @@ export default function WatchlistDashboard() {
 
           {/* Right Sidebar - Watchlists */}
           <aside className="lg:w-96 space-y-4">
-            <Card className="sticky top-4">
+            <Card className="sticky top-4 border-dashed bg-muted/30">
               <CardHeader>
                 <div className="flex items-center justify-between">
-                  <CardTitle className="text-xl">My Watchlists</CardTitle>
-                  <Button
-                    onClick={() => setIsCreateDialogOpen(true)}
-                    size="sm"
-                    className="gap-2"
-                  >
-                    <Plus className="h-4 w-4" />
-                    New
-                  </Button>
+                  <CardTitle className="text-xl text-muted-foreground">
+                    My Watchlists
+                  </CardTitle>
+                  <Badge variant="outline" className="bg-background">
+                    Coming Soon
+                  </Badge>
                 </div>
               </CardHeader>
-              <CardContent className="space-y-4">
-                {watchlists.length === 0 ? (
-                  <div className="text-center py-8">
-                    <div className="rounded-full bg-muted p-4 w-fit mx-auto mb-3">
-                      <TrendingUp className="h-8 w-8 text-muted-foreground" />
-                    </div>
-                    <p className="text-sm text-muted-foreground mb-4">
-                      No watchlists yet
-                    </p>
-                    <Button
-                      onClick={() => setIsCreateDialogOpen(true)}
-                      size="sm"
-                      variant="outline"
-                      className="gap-2"
-                    >
-                      <Plus className="h-4 w-4" />
-                      Create First Watchlist
-                    </Button>
+              <CardContent>
+                <div className="text-center py-10">
+                  <div className="rounded-full bg-background border-2 border-dashed p-4 w-fit mx-auto mb-4">
+                    <TrendingUp className="h-8 w-8 text-muted-foreground/50" />
                   </div>
-                ) : (
-                  <div className="space-y-3 max-h-[calc(100vh-200px)] overflow-y-auto pr-2">
-                    {watchlists.map((watchlist) => (
-                      <WatchlistCard
-                        key={watchlist.id}
-                        watchlist={watchlist}
-                        onDelete={handleDeleteWatchlist}
-                        onUpdate={handleUpdateWatchlist}
-                        onRefresh={loadDashboardData}
-                      />
-                    ))}
-                  </div>
-                )}
+                  <h3 className="font-semibold text-lg mb-2">
+                    Feature Under Construction
+                  </h3>
+                  <p className="text-sm text-muted-foreground max-w-[240px] mx-auto mb-6">
+                    We are currently migrating our watchlist infrastructure to a new microservice.
+                  </p>
+                  <Button disabled variant="secondary" className="w-full gap-2 opacity-50">
+                    <Plus className="h-4 w-4" />
+                    Create Watchlist
+                  </Button>
+                </div>
               </CardContent>
             </Card>
           </aside>
