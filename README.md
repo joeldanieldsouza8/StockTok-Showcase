@@ -1,99 +1,174 @@
-# StockTok
+# StockTok - Financial Social Network
 
-Stocktok is a social stock analysis platform that uses the microservices architecture to stream real-time stock data and deliver insights for users on various stocks. Users can also view social feeds for various stocks and news.
-
-## Architecture
-
-![alt text](https://github.com/joeldanieldsouza8/StockTok/blob/master/readme-store/architecture.jpg "StockTok Architecture")
-
-## Getting Started
-
-- Must have access to Otter lab machines through University of Surrey
-
-### Accessing the Application
-
-The application is deployed and accessible at:
-
-**https://group16-web.com3033.csee-systems.com/**
-
-> **Note:** This URL is only accessible from within the University of Surrey Otter Lab machines whether physically or through SSH due to security purposes.
-
-### Using the Application
-
-1. **Sign In**
-   - Navigate to the home page (Alternatively `/`)
-   - Click the **"Get Started"** button
-   - Sign in using your Gmail account via Auth0
-
-2. **Navigate to Dashboard**
-   - After signing in, click **"Go to Dashboard"** to access the main dashboard
-   - Alternatively, navigate directly to `/dashboard`
-  
-3. **Explore Markets**
-   - You can explore various stocks and their market data such as charts etc. by either clicking the stock in their watchlist or if you want to view the range of stocks available, you can navigate to `/market` or for a specific ticker use `/market/[ticker]` where `[ticker]` needs to be replaced by the ticker of a stock such as "NVDA" or "AAPL"
-   ![alt text](https://github.com/joeldanieldsouza8/StockTok/blob/master/readme-store/market-apple.jpg "Market data example for AAPL")
-
-3. **Create and Manage Watchlists**
-   - Create a new watchlist from the dashboard `/dashboard`
-   - Add stock tickers to your watchlist
-
-
-
-4. **Interact with Social Feeds**
-   - View posts and discussions about specific stocks by going going to a stock in market or going to your watchlist and clicking the button shown below and then clicking DISCUSSION:
-   ![alt text](https://github.com/joeldanieldsouza8/StockTok/blob/master/readme-store/dashboard-feed.jpg "Feed example for APPLE (AAPL)")
-   - Alternatively, navigate to `/feed/[ticker]`
-   - Create posts about stocks you're tracking
-   - Comment on other users' posts
-   ![alt text](https://github.com/joeldanieldsouza8/StockTok/blob/master/readme-store/social.jpg "Social posts/comments example for APPLE (AAPL)")
-
-
-### Available Routes
-
-- `/` - Home page
-- `/dashboard` - Main dashboard with watchlists
-- `/feed/[ticker]` - Social feed for a specific stock ticker (e.g., `/feed/AAPL`)
-- `/market` - Market overview
-- `/market/[ticker]` - Detailed market data for a specific ticker
-
-### Known Issues
-
-Please be aware of the following minor issues:
-
-- **Random Sign-Outs:** Users may be signed out randomly. If this occurs, simply sign back in using the same Gmail account.
-- **Non-Functional Buttons:** Some buttons such as "Community" and "Docs" may not be fully functional. Note that the community features are accessible through the social feed pages (`/feed/[ticker]`).
-- If you have used the app before, your profile may be CACHED so please SIGN OUT and sign back in
-
-
-### Tech Stack
-- .NET (C#) for backend
-- FASTAPI (Python) for backend\
-- YARP gateway for handling request routing to different services
-- Nginx
-- PostgreSQL
-- Auth0
-- TypeScript
-- NextJS
-
-### APIs
-- Yahoo Finance API (market data for tickers)
-- MarketAux API (news for tickers)
-
-
-### Developers
-
-- Joel D'Souza (Full Stack Developer)
-- Said Ait Ennecer (Full Stack Developer, Report Lead)
-- Rita San (Full Stack Developer)
-- Eyad Cherifi (Full Stack Developer)
-- Steven Thomas (Technical Lead, Full Stack Developer)
-- Zayaan K. Khan (Technical Lead, Full Stack Developer)
+> **⚠️ Notice to Reviewers:**
+>
+> This repository was significantly refactored on **Feb 3rd, 2026**.
+>
+> If you reviewed this code prior to this date, please note that the `master` branch has been updated to reflect a modern **Microservices Architecture** using YARP and a cleaner Domain-Driven Design approach.
+>
+> **Key Improvements:**
+> * Refactored backend into separated services (News, User, Community).
+> * Implemented API Gateway (YARP).
+> * Added Unit Tests with xUnit & Moq.
+> * Sanitized configuration and security settings.
 
 ---
 
-### Affiliations
-- This project is affiliated with University of Surrey for ENGINEERING INTERNET SCALE SYSTEMS (COM3033)
+## 📖 Project Overview
 
-## License
+**StockTok** is a social platform designed for financial enthusiasts. It combines real-time market data with community interaction, allowing users to discuss stocks, track news, and interact with peers.
 
-This project is licensed under the MIT License.
+This project serves as a showcase of a **Distributed Microservices Architecture** built with **.NET** and **Next.js**.
+
+## 🏗 Architecture
+
+The backend is structured using **Clean Architecture** principles, enforcing a strict separation of concerns between the Domain, Infrastructure, and API layers.
+
+### System Components
+
+| Service | Technology | Description |
+| :--- | :--- | :--- |
+| **API Gateway** | .NET / YARP | The entry point for all client requests. Handles routing, load balancing, and reverse proxying to downstream clusters. |
+| **User Service** | .NET / EF Core | Manages user identity, profiles, and authentication state (integrated with Auth0). |
+| **News Service** | .NET / External API | Aggregates financial news from the MarketAux API. Includes caching and data transformation logic. |
+| **Community Service** | .NET / EF Core | Handles social features including posts, comments, and threads. |
+| **Frontend** | Next.js / TypeScript | A modern, server-side rendered React application. |
+
+### Data Strategy
+
+Each microservice owns its own database context and migration history, adhering to the **Database-per-Service** pattern to ensure loose coupling.
+
+* **UserDB:** PostgreSQL (Port 5432)
+* **CommunityDB:** PostgreSQL (Port 5433)
+* **NewsDB:** PostgreSQL (Port 5434)
+
+## 🛠 Tech Stack
+
+* **Backend:** .NET 9, Entity Framework Core, YARP (Reverse Proxy)
+* **Frontend:** Next.js, TypeScript, Tailwind CSS
+* **Databases:** PostgreSQL (Dockerized)
+* **Testing:** xUnit, Moq
+* **Authentication:** Auth0 (OAuth 2.0 / OIDC)
+* **DevOps:** Docker Compose
+
+## 🚀 Getting Started
+
+Follow these steps to set up the project locally.
+
+### 1. Prerequisites
+
+* [.NET SDK](https://dotnet.microsoft.com/download)
+* [Docker Desktop](https://www.docker.com/products/docker-desktop)
+* [Node.js](https://nodejs.org/)
+
+### 2. Configuration Setup
+
+**Security Note:** This project uses sanitized configuration files. You must rename the example files to activate them.
+
+**Root Environment (Databases)**
+```bash
+# In the root directory
+cp .env.example .env
+```
+
+**Frontend Environment**
+
+Run this in the frontend directory:
+```bash
+cd frontend
+cp .env.example .env.local
+```
+
+> **Note:** You will need to populate `frontend/.env.local` with your own Auth0 credentials if you wish to test the full login flow.
+
+**Backend Configuration**
+
+The backend services (User, News, Community) use `appsettings.Development.json`.
+
+Each service requires Auth0 credentials and service-specific settings. Below is an example configuration structure:
+```json
+{
+    "Logging": {
+        "LogLevel": {
+            "Default": "Information",
+            "Microsoft.AspNetCore": "Warning"
+        }
+    },
+    "AllowedHosts": "*",
+    "ConnectionStrings": {
+        "NewsDatabase": ""
+    },
+    "Auth0": {
+        "Domain": "",
+        "Audience": ""
+    },
+    "NewsApiSettings": {
+        "BaseUrl": "https://api.marketaux.com/v1/",
+        "ApiToken": ""
+    }
+}
+```
+
+> **Important:** You must populate the following fields in each service's `appsettings.Development.json`:
+>
+> * **Auth0.Domain** - Your Auth0 tenant domain (e.g., `your-tenant.auth0.com`)
+> * **Auth0.Audience** - Your Auth0 API audience identifier
+> * **ConnectionStrings** - The appropriate database connection string for each service
+>
+> Additionally, the News service requires an API Key. Navigate to `backend/Src/Services/News/News.Api/appsettings.Development.json` and replace the empty `ApiToken` value with a valid MarketAux API key (or leave as is to test the application without live news data).
+
+### 3. Run Infrastructure (Docker)
+
+Start the PostgreSQL containers for all three microservices.
+```bash
+docker-compose up -d
+```
+
+### 4. Run the Application
+
+You can run the backend services individually or using your IDE's compound run configuration.
+
+**Option A: Using CLI**
+
+Open separate terminals for the Gateway and Services:
+```bash
+dotnet run --project backend/Src/Gateway/ApiGateway
+dotnet run --project backend/Src/Services/User/User.Api
+dotnet run --project backend/Src/Services/News/News.Api
+dotnet run --project backend/Src/Services/Community/Community.Api
+```
+
+**Option B: Visual Studio / Rider**
+
+Use the "Start All" Run Configuration (if imported) to launch all services and the Gateway simultaneously.
+
+### 5. Run the Frontend
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+The application will be available at http://localhost:3000.
+
+## 🧪 Testing
+
+The solution includes a dedicated Unit Test project for the News Service, focusing on business logic validation and mocking external dependencies.
+
+To run tests:
+```bash
+dotnet test backend/News.Tests
+```
+
+## 📂 Project Structure
+```
+├── backend/
+│   ├── ApiGateway/       # YARP Configuration & Routing
+│   ├── Community.Api/    # Community Microservice
+│   ├── News.Api/         # News Microservice
+│   ├── User.Api/         # User Microservice
+│   └── News.Tests/       # Unit Tests (xUnit)
+├── frontend/             # Next.js Application
+├── compose.yaml          # Docker Infrastructure
+└── .env.example          # Environment Variable Template
+```
